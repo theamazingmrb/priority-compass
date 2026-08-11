@@ -12,6 +12,12 @@ vi.mock("@/lib/spotify-context", () => ({
   useSpotify: () => ({ user: mockSpotifyUser, login: mockLogin }),
 }));
 
+const mockInitiateSpotifyAuth = vi.fn();
+
+vi.mock("@/lib/spotify", () => ({
+  initiateSpotifyAuth: (...args: unknown[]) => mockInitiateSpotifyAuth(...args),
+}));
+
 let mockAuthUser: { id: string; last_sign_in_at?: string } | null = {
   id: "u1",
   last_sign_in_at: "2026-03-14T00:00:00Z",
@@ -68,15 +74,28 @@ describe("SpotifyConnectBanner", () => {
     });
   });
 
-  it("calls login when 'Connect Spotify' button clicked", async () => {
+  it("calls initiateSpotifyAuth when 'Connect Spotify' button clicked", async () => {
     const user = userEvent.setup();
+    mockInitiateSpotifyAuth.mockReturnValue(null);
 
     render(<SpotifyConnectBanner />);
 
     await waitFor(() => screen.getByRole("button", { name: /Connect Spotify/i }));
     await user.click(screen.getByRole("button", { name: /Connect Spotify/i }));
 
-    expect(mockLogin).toHaveBeenCalledOnce();
+    expect(mockInitiateSpotifyAuth).toHaveBeenCalledOnce();
+  });
+
+  it("shows an error message when Spotify isn't configured", async () => {
+    const user = userEvent.setup();
+    mockInitiateSpotifyAuth.mockReturnValue("Spotify isn't configured. Add NEXT_PUBLIC_SPOTIFY_CLIENT_ID to your environment.");
+
+    render(<SpotifyConnectBanner />);
+
+    await waitFor(() => screen.getByRole("button", { name: /Connect Spotify/i }));
+    await user.click(screen.getByRole("button", { name: /Connect Spotify/i }));
+
+    expect(screen.getByText(/Spotify isn't configured/i)).toBeInTheDocument();
   });
 
   it("dismisses banner when X button clicked", async () => {

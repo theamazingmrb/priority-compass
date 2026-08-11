@@ -172,10 +172,18 @@ async function getValidToken(): Promise<string | null> {
 
 /**
  * Initiate Google OAuth flow
+ * Returns an error message if OAuth isn't configured, or null if the redirect started.
  */
-export function initiateGoogleAuth(): void {
+export function initiateGoogleAuth(): string | null {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
+
+  if (!clientId || clientId.startsWith("your-") || clientId.length < 20) {
+    return "Google Calendar isn't configured. Add NEXT_PUBLIC_GOOGLE_CLIENT_ID and NEXT_PUBLIC_GOOGLE_REDIRECT_URI to your environment.";
+  }
+  if (!redirectUri || redirectUri.startsWith("your-") || !redirectUri.startsWith("http")) {
+    return "Google Calendar isn't configured. Set NEXT_PUBLIC_GOOGLE_REDIRECT_URI to your callback URL.";
+  }
 
   // Generate state for CSRF protection
   const state = Array.from(crypto.getRandomValues(new Uint8Array(16)))
@@ -186,8 +194,8 @@ export function initiateGoogleAuth(): void {
   document.cookie = `google_oauth_state=${state}; path=/; max-age=600; SameSite=Lax`;
 
   const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
-  authUrl.searchParams.set("client_id", clientId!);
-  authUrl.searchParams.set("redirect_uri", redirectUri!);
+  authUrl.searchParams.set("client_id", clientId);
+  authUrl.searchParams.set("redirect_uri", redirectUri);
   authUrl.searchParams.set("response_type", "code");
   authUrl.searchParams.set("scope", "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.readonly");
   authUrl.searchParams.set("access_type", "offline");
@@ -195,6 +203,7 @@ export function initiateGoogleAuth(): void {
   authUrl.searchParams.set("state", state);
 
   window.location.href = authUrl.toString();
+  return null;
 }
 
 /**

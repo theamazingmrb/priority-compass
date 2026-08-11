@@ -29,9 +29,18 @@ export function setSpotifyUser(user: SpotifyUser | null): void {
 }
 
 // Initiate Spotify OAuth flow
-export function initiateSpotifyAuth(): void {
+// Returns an error message if OAuth isn't configured, or null if the redirect started.
+export function initiateSpotifyAuth(): string | null {
   const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
   const redirectUri = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI;
+
+  if (!clientId || clientId.startsWith("your-") || clientId.length < 10) {
+    return "Spotify isn't configured. Add NEXT_PUBLIC_SPOTIFY_CLIENT_ID and NEXT_PUBLIC_SPOTIFY_REDIRECT_URI to your environment.";
+  }
+  if (!redirectUri || redirectUri.startsWith("your-") || !redirectUri.startsWith("http")) {
+    return "Spotify isn't configured. Set NEXT_PUBLIC_SPOTIFY_REDIRECT_URI to your callback URL.";
+  }
+
   const scopes = [
     'user-read-private',
     'user-read-email',
@@ -52,12 +61,13 @@ export function initiateSpotifyAuth(): void {
 
   const authUrl = new URL('https://accounts.spotify.com/authorize');
   authUrl.searchParams.set('response_type', 'code');
-  authUrl.searchParams.set('client_id', clientId!);
+  authUrl.searchParams.set('client_id', clientId);
   authUrl.searchParams.set('scope', scopes);
-  authUrl.searchParams.set('redirect_uri', redirectUri!);
+  authUrl.searchParams.set('redirect_uri', redirectUri);
   authUrl.searchParams.set('state', state);
 
   window.location.href = authUrl.toString();
+  return null;
 }
 
 // Handle OAuth callback — tokens are delivered via httpOnly cookie, not URL params
