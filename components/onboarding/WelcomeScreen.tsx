@@ -82,8 +82,7 @@ export default function WelcomeScreen({ onGetStarted, onSkip }: WelcomeScreenPro
       id: "analytics",
       icon: <BarChart3 className="w-5 h-5 text-primary" />,
       title: "Analytics Dashboard",
-      description: "Track your productivity patterns and insights",
-      comingSoon: true
+      description: "Track your focus time, patterns, streaks, and progress",
     },
     {
       id: "ai",
