@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Activity, Target, Calendar, BookOpen, Zap, Lock, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
+import BrandLogo from "@/components/brand-logo";
 
 const FEATURES = [
   {
@@ -65,7 +66,7 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto w-full">
         <div className="flex items-center gap-2">
-          <Activity size={18} className="text-primary" />
+          <BrandLogo size={20} className="text-primary" />
           <span className="font-bold tracking-tight">Priority Compass</span>
         </div>
         <div className="flex items-center gap-3">
@@ -187,7 +188,7 @@ export default function LandingPage() {
       <footer className="border-t border-border py-8">
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Activity size={14} className="text-primary" />
+            <BrandLogo size={16} className="text-primary" />
             <span>Priority Compass</span>
             <span className="text-border">·</span>
             <span>Clarity over chaos</span>

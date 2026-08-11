@@ -9,6 +9,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useSidebar } from "@/lib/sidebar-context";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import BrandLogo from "@/components/brand-logo";
 import Image from "next/image";
 
 const links = [
@@ -55,7 +56,8 @@ export default function Nav() {
         {/* Logo / Toggle */}
         <div className="mb-8 px-3 flex items-center justify-between">
           {!collapsed && (
-            <div>
+            <div className="flex items-center gap-2">
+              <BrandLogo size={20} className="text-primary" />
               <span className="text-primary font-bold text-base tracking-tight">Priority Compass</span>
             </div>
           )}
