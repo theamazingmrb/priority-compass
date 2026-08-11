@@ -5,6 +5,7 @@ import OnboardingFlow, {
   DEFAULT_ONBOARDING_STEPS,
 } from "@/components/onboarding/OnboardingFlow";
 import { Target } from "lucide-react";
+import { createTask } from "@/lib/tasks";
 
 // Mock useAuth for components that need it (like NorthStarStep)
 vi.mock("@/lib/auth-context", () => ({
@@ -18,6 +19,11 @@ vi.mock("@/lib/north-star", () => ({
   MAX_CONTENT_LENGTH: 500,
   NORTH_STAR_PROMPTS: [],
   truncateNorthStar: vi.fn((content: string) => content),
+}));
+
+// Mock tasks lib so the first-task step can create a task
+vi.mock("@/lib/tasks", () => ({
+  createTask: vi.fn().mockResolvedValue({ id: "t1", user_id: "u1", title: "Test" }),
 }));
 
 // Minimal step set for most tests
@@ -224,6 +230,64 @@ describe("OnboardingFlow", () => {
       const closeButton = screen.getByRole("button", { name: "" });
       await user.click(closeButton);
       expect(onClose).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe("first task step", () => {
+    it("shows a task input on the first-task step", async () => {
+      const user = userEvent.setup();
+      render(<OnboardingFlow {...defaultProps} steps={DEFAULT_ONBOARDING_STEPS} />);
+      // welcome -> north-star -> projects -> first-task
+      await user.click(screen.getByRole("button", { name: /next/i })); // welcome -> north-star
+      // north-star is special; skip it via its Skip button
+      await user.click(screen.getByRole("button", { name: /skip for now/i }));
+      // projects is regular -> next
+      await user.click(screen.getByRole("button", { name: /next/i }));
+      expect(
+        screen.getByPlaceholderText("What's one thing you want to accomplish today?")
+      ).toBeInTheDocument();
+    });
+
+    it("creates a task when title is entered and Create Task is clicked", async () => {
+      const user = userEvent.setup();
+      render(<OnboardingFlow {...defaultProps} steps={DEFAULT_ONBOARDING_STEPS} />);
+      await user.click(screen.getByRole("button", { name: /next/i })); // -> north-star
+      await user.click(screen.getByRole("button", { name: /skip for now/i })); // skip north-star
+      await user.click(screen.getByRole("button", { name: /next/i })); // projects -> first-task
+
+      const input = screen.getByPlaceholderText("What's one thing you want to accomplish today?");
+      await user.type(input, "Ship the feature");
+      await user.click(screen.getByRole("button", { name: /create task/i }));
+
+      expect(createTask).toHaveBeenCalledWith(
+        expect.objectContaining({ title: "Ship the feature", priority_level: 1 })
+      );
+    });
+
+    it("advances after creating a task", async () => {
+      const user = userEvent.setup();
+      render(<OnboardingFlow {...defaultProps} steps={DEFAULT_ONBOARDING_STEPS} />);
+      await user.click(screen.getByRole("button", { name: /next/i })); // -> north-star
+      await user.click(screen.getByRole("button", { name: /skip for now/i }));
+      await user.click(screen.getByRole("button", { name: /next/i })); // -> first-task
+
+      const input = screen.getByPlaceholderText("What's one thing you want to accomplish today?");
+      await user.type(input, "Ship it");
+      await user.click(screen.getByRole("button", { name: /create task/i }));
+
+      expect(screen.getByText(/reflection/i)).toBeInTheDocument(); // advanced to reflections step
+    });
+
+    it("skips the first-task step without creating a task", async () => {
+      const user = userEvent.setup();
+      render(<OnboardingFlow {...defaultProps} steps={DEFAULT_ONBOARDING_STEPS} />);
+      await user.click(screen.getByRole("button", { name: /next/i })); // -> north-star
+      await user.click(screen.getByRole("button", { name: /skip for now/i }));
+      await user.click(screen.getByRole("button", { name: /next/i })); // -> first-task
+
+      await user.click(screen.getByRole("button", { name: /skip for now/i }));
+
+      expect(createTask).not.toHaveBeenCalled();
     });
   });
 

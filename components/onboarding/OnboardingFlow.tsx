@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { upsertNorthStar, NORTH_STAR_PROMPTS, MAX_CONTENT_LENGTH } from "@/lib/north-star";
+import { createTask } from "@/lib/tasks";
 import { toast } from "sonner";
 
 interface OnboardingStep {
@@ -152,6 +153,119 @@ function NorthStarStep({
   );
 }
 
+// First task step component — actually creates a task so onboarding ends with a win
+function FirstTaskStep({
+  onComplete,
+  onSkip,
+}: {
+  onComplete: () => void;
+  onSkip: () => void;
+}) {
+  const { user } = useAuth();
+  const [title, setTitle] = useState("");
+  const [priority, setPriority] = useState(1); // 1=Hot, 2=Warm, 3=Cool, 4=Cold
+  const [isSaving, setIsSaving] = useState(false);
+
+  async function handleSave() {
+    if (!user || !title.trim()) return;
+
+    setIsSaving(true);
+    const result = await createTask({
+      user_id: user.id,
+      title: title.trim(),
+      description: null,
+      status: "active",
+      project_id: null,
+      notes: null,
+      due_date: null,
+      image_url: null,
+      priority_level: priority,
+      scheduling_mode: "manual",
+      estimated_duration: 30,
+      start_time: null,
+      end_time: null,
+      locked: false,
+      focus_mode: null,
+      recurrence_type: null,
+      recurrence_interval: 1,
+      recurrence_end_date: null,
+      recurrence_weekdays: null,
+      parent_task_id: null,
+      skipped_dates: null,
+      is_recurrence_template: false,
+    });
+    setIsSaving(false);
+
+    if (result) {
+      toast.success("First task created! 🎉");
+      onComplete();
+    } else {
+      toast.error("Failed to create task. Try again or skip for now.");
+    }
+  }
+
+  const priorities = [
+    { value: 1, label: "🔥 Hot — do it now", className: "border-red-500/50 text-red-500" },
+    { value: 2, label: "🌤️ Warm — do it soon", className: "border-amber-500/50 text-amber-500" },
+    { value: 3, label: "🧊 Cool — can wait", className: "border-blue-500/50 text-blue-500" },
+    { value: 4, label: "❄️ Cold — someday", className: "border-slate-500/50 text-slate-500" },
+  ];
+
+  return (
+    <div className="space-y-4">
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="What's one thing you want to accomplish today?"
+        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        autoFocus
+      />
+
+      <div>
+        <p className="text-xs font-medium text-muted-foreground mb-2">How urgent is it?</p>
+        <div className="grid grid-cols-2 gap-2">
+          {priorities.map((p) => (
+            <button
+              key={p.value}
+              type="button"
+              onClick={() => setPriority(p.value)}
+              className={`rounded-md border px-3 py-2 text-sm font-medium transition-colors ${
+                priority === p.value ? `${p.className} bg-secondary/50` : "border-border text-muted-foreground hover:bg-secondary/30"
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <p className="text-xs text-muted-foreground text-center">
+        We&apos;ll place this on your dashboard so you can start working right away.
+      </p>
+
+      <div className="flex gap-3 pt-2">
+        <Button variant="outline" onClick={onSkip} disabled={isSaving}>
+          Skip for now
+        </Button>
+        <Button onClick={handleSave} disabled={isSaving || !title.trim()} className="flex-1">
+          {isSaving ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Creating...
+            </>
+          ) : (
+            <>
+              <Check className="h-4 w-4 mr-2" />
+              Create Task
+            </>
+          )}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export default function OnboardingFlow({
   isOpen,
   onClose,
@@ -198,6 +312,8 @@ export default function OnboardingFlow({
 
   // Check if this is a North Star step
   const isNorthStarStep = currentStepData.id === 'north-star';
+  // Check if this is a First Task step
+  const isFirstTaskStep = currentStepData.id === 'first-task';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -244,6 +360,11 @@ export default function OnboardingFlow({
           {/* North Star step has special content */}
           {isNorthStarStep ? (
             <NorthStarStep 
+              onComplete={handleNext}
+              onSkip={handleSkip}
+            />
+          ) : isFirstTaskStep ? (
+            <FirstTaskStep 
               onComplete={handleNext}
               onSkip={handleSkip}
             />
@@ -339,10 +460,11 @@ export const DEFAULT_ONBOARDING_STEPS: OnboardingStep[] = [
     icon: <FolderOpen className="w-8 h-8 text-primary" />,
   },
   {
-    id: "tasks",
-    title: "Manage Your Tasks",
-    description: "Break down your work into manageable tasks. Set priorities, due dates, and track your progress with our smart scheduling system. The Tasks page is your command center!",
+    id: "first-task",
+    title: "Create Your First Task",
+    description: "Let's set up your first task. What's one thing you want to accomplish today?",
     icon: <Target className="w-8 h-8 text-primary" />,
+    skip: true,
   },
   {
     id: "reflections",
