@@ -1,6 +1,6 @@
 # Development Guide
 
-This guide covers the development standards and practices for the Pulse project.
+This guide covers the development standards and practices for the Priority Compass project.
 
 ## 🚀 Quick Start
 

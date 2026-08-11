@@ -148,7 +148,8 @@ export default function FocusTimeSection({ data }: Props) {
                   labelStyle={{ color: "hsl(var(--foreground))" }}
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   formatter={(value: any) => [formatMinutes(Number(value)), "Focus Time"]}
-                  labelFormatter={(label) =>
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  labelFormatter={(label: any) =>
                     new Date(label).toLocaleDateString("en-US", {
                       weekday: "long",
                       month: "short",

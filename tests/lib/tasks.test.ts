@@ -167,6 +167,13 @@ describe("createTask", () => {
       end_time: null,
       locked: false,
       focus_mode: null,
+      recurrence_type: null,
+      recurrence_interval: 1,
+      recurrence_end_date: null,
+      recurrence_weekdays: null,
+      parent_task_id: null,
+      skipped_dates: null,
+      is_recurrence_template: false,
     });
 
     expect(result?.title).toBe("Test Task");
@@ -192,6 +199,13 @@ describe("createTask", () => {
       end_time: null,
       locked: false,
       focus_mode: null,
+      recurrence_type: null,
+      recurrence_interval: 1,
+      recurrence_end_date: null,
+      recurrence_weekdays: null,
+      parent_task_id: null,
+      skipped_dates: null,
+      is_recurrence_template: false,
     });
 
     expect(result).toBeNull();
@@ -218,6 +232,13 @@ describe("createTask", () => {
       end_time: null,
       locked: false,
       focus_mode: null,
+      recurrence_type: null,
+      recurrence_interval: 1,
+      recurrence_end_date: null,
+      recurrence_weekdays: null,
+      parent_task_id: null,
+      skipped_dates: null,
+      is_recurrence_template: false,
     });
 
     expect(chain.insert).toHaveBeenCalledWith([

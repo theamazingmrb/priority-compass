@@ -1,7 +1,7 @@
 # Recurring Tasks Feature
 
 ## Overview
-This implementation adds recurring task functionality to Priority Compass (Pulse). Tasks can now be set to repeat on various schedules (daily, weekly, monthly, yearly, or custom).
+This implementation adds recurring task functionality to Priority Compass. Tasks can now be set to repeat on various schedules (daily, weekly, monthly, yearly, or custom).
 
 ## Database Migration
 Run the migration file located at:

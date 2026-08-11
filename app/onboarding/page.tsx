@@ -49,7 +49,7 @@ export default function OnboardingPage() {
             </div>
             <h1 className="text-3xl font-bold mb-4">You&apos;re All Set!</h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Welcome to Pulse. Your productivity journey starts now.
+              Welcome to Priority Compass. Your productivity journey starts now.
             </p>
             <div className="animate-pulse text-sm text-muted-foreground">
               Redirecting to your dashboard...

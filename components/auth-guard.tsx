@@ -19,7 +19,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
         <Compass size={36} className="text-primary mb-5" />
-        <h2 className="text-2xl font-bold mb-2">Pulse</h2>
+        <h2 className="text-2xl font-bold mb-2">Priority Compass</h2>
         <p className="text-muted-foreground mb-8">Stay focused on what matters most.</p>
         <div className="flex gap-3">
           <Link href="/signin">

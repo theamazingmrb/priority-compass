@@ -86,7 +86,7 @@ export default function SignInPage() {
           </div>
           <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
           <p className="text-muted-foreground">
-            Sign in to your Pulse account
+            Sign in to your Priority Compass account
           </p>
         </CardHeader>
         

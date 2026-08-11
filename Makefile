@@ -1,11 +1,11 @@
-# Pulse - Development Commands
+# Priority Compass - Development Commands
 # Usage: make <target>
 
 .PHONY: help dev build start lint typecheck check clean install db-start db-stop db-reset db-types deploy
 
 # Default target
 help:
-	@echo "Pulse - Available Commands"
+	@echo "Priority Compass - Available Commands"
 	@echo ""
 	@echo "Development:"
 	@echo "  make dev          Start development server"

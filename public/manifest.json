@@ -1,6 +1,6 @@
 {
-  "name": "Pulse - Priority Compass",
-  "short_name": "Pulse",
+  "name": "Priority Compass",
+  "short_name": "Priority Compass",
   "description": "Stay focused on what matters most.",
   "start_url": "/",
   "display": "standalone",

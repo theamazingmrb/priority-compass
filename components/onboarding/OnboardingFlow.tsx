@@ -208,7 +208,7 @@ export default function OnboardingFlow({
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-primary" />
               <span className="text-sm font-medium text-muted-foreground">
-                Welcome to Pulse
+                Welcome to Priority Compass
               </span>
             </div>
             <Button
@@ -317,11 +317,11 @@ export default function OnboardingFlow({
   );
 }
 
-// Default onboarding steps for Pulse
+// Default onboarding steps for Priority Compass
 export const DEFAULT_ONBOARDING_STEPS: OnboardingStep[] = [
   {
     id: "welcome",
-    title: "Welcome to Pulse",
+    title: "Welcome to Priority Compass",
     description: "Your personal productivity companion that helps you organize tasks, track progress, and stay focused on what matters most.",
     icon: <Sparkles className="w-8 h-8 text-primary" />,
   },
@@ -360,7 +360,7 @@ export const DEFAULT_ONBOARDING_STEPS: OnboardingStep[] = [
   {
     id: "complete",
     title: "You're All Set!",
-    description: "Pulse is ready to help you achieve your goals. Start by creating a project, adding some tasks, or writing your first reflection. Let's build something great together!",
+    description: "Priority Compass is ready to help you achieve your goals. Start by creating a project, adding some tasks, or writing your first reflection. Let's build something great together!",
     icon: <Check className="w-8 h-8 text-primary" />,
   },
 ];

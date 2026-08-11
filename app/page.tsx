@@ -41,7 +41,7 @@ const FEATURES = [
 
 const STEPS = [
   { step: "01", title: "Check in", description: "Set your top priority in 60 seconds" },
-  { step: "02", title: "Plan", description: "Let Pulse schedule your day or place tasks manually" },
+  { step: "02", title: "Plan", description: "Let Priority Compass schedule your day or place tasks manually" },
   { step: "03", title: "Execute", description: "Focus on what matters, one task at a time" },
   { step: "04", title: "Reflect", description: "Daily, weekly, monthly reviews to stay aligned" },
 ];
@@ -66,7 +66,7 @@ export default function LandingPage() {
       <nav className="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto w-full">
         <div className="flex items-center gap-2">
           <Activity size={18} className="text-primary" />
-          <span className="font-bold tracking-tight">Pulse</span>
+          <span className="font-bold tracking-tight">Priority Compass</span>
         </div>
         <div className="flex items-center gap-3">
           <Link href="/signin">
@@ -150,14 +150,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Why Pulse */}
+      {/* Why Priority Compass */}
       <section className="max-w-3xl mx-auto px-6 pb-24">
         <div className="rounded-2xl border border-border bg-gradient-to-b from-muted/50 to-muted/20 p-8 md:p-12">
-          <h2 className="text-2xl font-bold mb-4">Why Pulse?</h2>
+          <h2 className="text-2xl font-bold mb-4">Why Priority Compass?</h2>
           <div className="grid gap-4">
             {[
               "Most productivity apps optimize for volume — more tasks, more tracking, more noise.",
-              "Pulse is built around a different idea: clarity drives productivity.",
+              "Priority Compass is built around a different idea: clarity drives productivity.",
               "One priority at a time. A scheduling engine that respects your energy. Reflection prompts that actually help.",
               "No gamification. No social features. Just you and your work.",
             ].map((text, i) => (
@@ -188,12 +188,12 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Activity size={14} className="text-primary" />
-            <span>Pulse</span>
+            <span>Priority Compass</span>
             <span className="text-border">·</span>
             <span>Clarity over chaos</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Pulse. All rights reserved.
+            © {new Date().getFullYear()} Priority Compass. All rights reserved.
           </p>
         </div>
       </footer>

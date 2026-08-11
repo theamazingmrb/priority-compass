@@ -1,6 +1,6 @@
 # OAuth Setup Guide
 
-This guide explains how to configure Google and Spotify OAuth for Pulse.
+This guide explains how to configure Google and Spotify OAuth for Priority Compass.
 
 ## Google OAuth Setup
 

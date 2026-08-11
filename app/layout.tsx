@@ -15,7 +15,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Pulse",
+  title: "Priority Compass",
   description: "Stay focused on what matters most.",
   // Enable PWA capabilities for push notifications
   manifest: "/manifest.json",
