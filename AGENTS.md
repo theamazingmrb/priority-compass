@@ -34,8 +34,8 @@ pnpm build      # production build
 3. `pnpm test` — all tests green
 4. `pnpm build` — compiles
 
-Common lint issues and their fixes are documented in `docs/development.md`
-(e.g. unescaped apostrophes → `&apos;`, hook deps → `useCallback`, `<img>` → `next/image`).
+Common lint issues and their fixes are listed in the "Common ESLint fixes"
+section below.
 
 ## Project structure
 
@@ -101,3 +101,35 @@ public/       # Static assets incl. PWA manifest.json, sw.js, PNG icons
 - Some build artifacts (`next-env.d.ts`, `tsconfig.tsbuildinfo`) regenerate on
   build — revert them before committing; don't include in PRs.
 - The app is dark-theme first (`defaultTheme="dark"`).
+
+## Common ESLint fixes
+
+- **Hook deps** (`useEffect has a missing dependency`) — wrap the function in
+  `useCallback` with the right deps, or add the dep to the array. Don't just
+  silence it.
+- **Unused imports/vars** — remove them.
+- **`<img>` → `next/image`** — use `Image` from `next/image` for LCP.
+- **Empty TS interfaces** — use `type Alias = Base` instead of an empty
+  `interface extends Base {}`.
+- **Unescaped apostrophes** — in JSX, use `&apos;` (e.g. `I&apos;ll`) or the
+  lint fails. This one is a hard error, not a warning.
+
+## Development workflow
+
+1. Branch off `main` (`git checkout -b feature/your-feature-name`).
+2. Make changes following the conventions above; write tests for new logic.
+3. Run quality gates: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.
+4. Commit — the husky pre-commit hook runs ESLint and blocks on any error OR
+   warning.
+5. Push & open a PR; CI runs the full checks on `main`/PRs.
+
+## Contributing checklist
+
+- [ ] ESLint passes (no errors or warnings)
+- [ ] TypeScript compiles without errors
+- [ ] Tests pass
+- [ ] Build succeeds
+- [ ] Documentation updated
+- [ ] Performance considerations addressed
+- [ ] Security implications considered
+

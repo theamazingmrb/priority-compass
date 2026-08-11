@@ -431,6 +431,42 @@ When prioritizing features, use this lens:
 
 ---
 
+## Integration Gaps & Data Model (from Integration Plan)
+
+The core loop pieces exist but don't all talk to each other yet. Targeted integration work:
+
+1. **Alignment context** — North Star, Core Values, and Daily Intent should surface together in the check-in flow (currently set in separate settings screens).
+2. **Energy-aware suggestions** — Weekly Rhythm should influence Focus Timer duration/slot suggestions.
+3. **Intent completion loop** — morning intent should connect to evening reflection ("did you accomplish what you committed to?").
+4. **Focus Mode analytics** — time spent broken out by Focus Mode and Life Lane in the Analytics page.
+
+### Planned data model additions (P2)
+
+```sql
+-- Boundaries (persistent "say no to" list)
+CREATE TABLE boundaries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  boundary_text TEXT NOT NULL,
+  category TEXT, -- 'time', 'energy', 'commitments', 'distractions'
+  is_active BOOLEAN DEFAULT true,
+  violation_count INTEGER DEFAULT 0,
+  last_violated_at TIMESTAMPTZ
+);
+
+-- Link focus sessions to a daily intent
+ALTER TABLE focus_sessions
+ADD COLUMN IF NOT EXISTS intent_id UUID REFERENCES checkins(id);
+```
+
+### Planned reflection prompt additions
+- **Daily intent check** — "Did you accomplish what you committed to today? What about what you said NO to?" (pulls today's checkin context)
+- **Boundary protection** — "Did you protect your boundaries today? Where did you get pulled off course?"
+
+---
+
 ## Success Metrics (North Stars)
 
 | Metric | Baseline (Pre-Phase 1) | Current (Post-Phase 1) | 30-Day Target | 90-Day Target |
