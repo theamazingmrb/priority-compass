@@ -275,7 +275,7 @@ describe("OnboardingFlow", () => {
       await user.type(input, "Ship it");
       await user.click(screen.getByRole("button", { name: /create task/i }));
 
-      expect(screen.getByText(/reflection/i)).toBeInTheDocument(); // advanced to reflections step
+      expect(screen.getByRole("heading", { name: /try a focus session/i })).toBeInTheDocument(); // advanced to start-focus step
     });
 
     it("skips the first-task step without creating a task", async () => {
@@ -291,9 +291,39 @@ describe("OnboardingFlow", () => {
     });
   });
 
+  describe("start focus step", () => {
+    it("links to the focus timer with the created task when a task was made", async () => {
+      const user = userEvent.setup();
+      render(<OnboardingFlow {...defaultProps} steps={DEFAULT_ONBOARDING_STEPS} />);
+      // welcome -> north-star -> projects -> first-task
+      await user.click(screen.getByRole("button", { name: /next/i }));
+      await user.click(screen.getByRole("button", { name: /skip for now/i })); // skip north-star
+      await user.click(screen.getByRole("button", { name: /next/i })); // -> first-task
+      // create a task
+      const input = screen.getByPlaceholderText("What's one thing you want to accomplish today?");
+      await user.type(input, "My first task");
+      await user.click(screen.getByRole("button", { name: /create task/i }));
+
+      const focusLink = screen.getByRole("link", { name: /open focus timer/i });
+      expect(focusLink).toHaveAttribute("href", "/focus?taskId=t1");
+    });
+
+    it("links to the plain focus timer when no task was created", async () => {
+      const user = userEvent.setup();
+      render(<OnboardingFlow {...defaultProps} steps={DEFAULT_ONBOARDING_STEPS} />);
+      await user.click(screen.getByRole("button", { name: /next/i })); // -> north-star
+      await user.click(screen.getByRole("button", { name: /skip for now/i })); // skip north-star
+      await user.click(screen.getByRole("button", { name: /next/i })); // -> first-task
+      await user.click(screen.getByRole("button", { name: /skip for now/i })); // skip first-task
+
+      const focusLink = screen.getByRole("link", { name: /open focus timer/i });
+      expect(focusLink).toHaveAttribute("href", "/focus");
+    });
+  });
+
   describe("DEFAULT_ONBOARDING_STEPS", () => {
-    it("has 7 steps", () => {
-      expect(DEFAULT_ONBOARDING_STEPS).toHaveLength(7);
+    it("has 8 steps", () => {
+      expect(DEFAULT_ONBOARDING_STEPS).toHaveLength(8);
     });
 
     it("starts with the welcome step", () => {
@@ -330,6 +360,8 @@ describe("OnboardingFlow", () => {
         const saveButton = screen.queryByRole("button", { name: /Save & Continue/i });
         const nextButton = screen.queryByRole("button", { name: /next/i });
         const skipButton = screen.queryByRole("button", { name: /skip/i });
+        // Start-focus step uses "I'll do this later"
+        const laterButton = screen.queryByRole("button", { name: /i'll do this later/i });
         
         if (saveButton && !saveButton.hasAttribute('disabled')) {
           await user.click(saveButton);
@@ -337,6 +369,8 @@ describe("OnboardingFlow", () => {
           await user.click(nextButton);
         } else if (skipButton) {
           await user.click(skipButton);
+        } else if (laterButton) {
+          await user.click(laterButton);
         }
       }
       // Last step shows "Get Started"

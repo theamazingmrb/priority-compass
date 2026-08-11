@@ -1,23 +1,25 @@
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { 
-  ArrowRight, 
-  ArrowLeft, 
-  Check, 
-  Sparkles, 
-  FolderOpen, 
-  Calendar, 
-  Music, 
+import {
+  ArrowRight,
+  ArrowLeft,
+  Check,
+  Sparkles,
+  FolderOpen,
+  Calendar,
+  Music,
   Target,
   Star,
   X,
   SkipForward,
   Loader2,
-  RefreshCw
+  RefreshCw,
+  Play,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { upsertNorthStar, NORTH_STAR_PROMPTS, MAX_CONTENT_LENGTH } from "@/lib/north-star";
@@ -157,9 +159,11 @@ function NorthStarStep({
 function FirstTaskStep({
   onComplete,
   onSkip,
+  onTaskCreated,
 }: {
   onComplete: () => void;
   onSkip: () => void;
+  onTaskCreated?: (taskId: string) => void;
 }) {
   const { user } = useAuth();
   const [title, setTitle] = useState("");
@@ -198,6 +202,7 @@ function FirstTaskStep({
 
     if (result) {
       toast.success("First task created! 🎉");
+      onTaskCreated?.(result.id);
       onComplete();
     } else {
       toast.error("Failed to create task. Try again or skip for now.");
@@ -274,6 +279,7 @@ export default function OnboardingFlow({
 }: OnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+  const [createdTaskId, setCreatedTaskId] = useState<string | null>(null);
 
   const currentStepData = steps[currentStep];
   const progress = ((currentStep + 1) / steps.length) * 100;
@@ -314,6 +320,8 @@ export default function OnboardingFlow({
   const isNorthStarStep = currentStepData.id === 'north-star';
   // Check if this is a First Task step
   const isFirstTaskStep = currentStepData.id === 'first-task';
+  // Check if this is a Start Focus step
+  const isStartFocusStep = currentStepData.id === 'start-focus';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -367,7 +375,26 @@ export default function OnboardingFlow({
             <FirstTaskStep 
               onComplete={handleNext}
               onSkip={handleSkip}
+              onTaskCreated={(taskId) => setCreatedTaskId(taskId)}
             />
+          ) : isStartFocusStep ? (
+            <div className="space-y-4 text-center">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {createdTaskId
+                  ? "Now let's try a focus session on your new task. Pick a duration, then start the timer and work on it for a few minutes."
+                  : "Now let's try a focus session. The timer helps you work in uninterrupted blocks."}
+              </p>
+              <Link
+                href={createdTaskId ? `/focus?taskId=${createdTaskId}` : "/focus"}
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary text-primary-foreground px-4 py-3 text-sm font-medium hover:bg-primary/90 transition-colors w-full"
+              >
+                <Play size={16} />
+                Open Focus Timer
+              </Link>
+              <Button variant="ghost" onClick={handleNext} className="w-full text-muted-foreground">
+                I&apos;ll do this later
+              </Button>
+            </div>
           ) : (
             /* Regular steps */
             <div className="flex gap-3">
@@ -464,6 +491,13 @@ export const DEFAULT_ONBOARDING_STEPS: OnboardingStep[] = [
     title: "Create Your First Task",
     description: "Let's set up your first task. What's one thing you want to accomplish today?",
     icon: <Target className="w-8 h-8 text-primary" />,
+    skip: true,
+  },
+  {
+    id: "start-focus",
+    title: "Try a Focus Session",
+    description: "The Focus Timer is how you get into deep work. Let's try it for a few minutes.",
+    icon: <Play className="w-8 h-8 text-primary" />,
     skip: true,
   },
   {

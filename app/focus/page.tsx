@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
 import { useSpotify } from "@/lib/spotify-context";
@@ -41,9 +41,19 @@ const FOCUS_PLAYLIST_SUGGESTIONS = [
 ];
 
 export default function FocusTimerPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <FocusTimerPageInner />
+    </Suspense>
+  );
+}
+
+function FocusTimerPageInner() {
   const { user } = useAuth();
   const { user: spotifyUser, isPlaying, playerReady, playTrack, pause } = useSpotify();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const taskFromUrl = searchParams.get("taskId");
 
   // Timer state
   const [selectedPreset, setSelectedPreset] = useState<FocusTimerPreset>(PRESETS[1]);
@@ -86,7 +96,7 @@ export default function FocusTimerPage() {
       loadRecentSessions();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, taskFromUrl]);
 
   // Timer countdown
   useEffect(() => {
@@ -121,7 +131,14 @@ export default function FocusTimerPage() {
       .eq("status", "active")
       .order("created_at", { ascending: false })
       .limit(20);
-    setTasks(data || []);
+    const tasksData = data || [];
+    setTasks(tasksData);
+
+    // Pre-select task passed via ?taskId= (e.g. from onboarding's "Start a session")
+    if (taskFromUrl && tasksData.some((t: Task) => t.id === taskFromUrl)) {
+      setSelectedTaskId(taskFromUrl);
+      setShowTaskSelector(true);
+    }
     
     // Load recurring task templates
     if (user) {
