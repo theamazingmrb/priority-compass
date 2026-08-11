@@ -417,18 +417,17 @@ When prioritizing features, use this lens:
 ## Technical Debt & Maintenance
 
 ### Current Technical Debt
-- No automated tests for scheduling algorithm
-- Some components have grown large (dashboard, task list)
+- Some components have grown large (focus page, task list, dashboard)
 - Missing loading states in some areas
 - Error handling could be more graceful
-- Need analytics queries optimized (may need materialized views)
+- Analytics queries may need materialized views at scale
 
 ### Maintenance Priorities
-1. Add unit tests for `lib/scheduling.ts`
-2. Component audit for large files (>300 lines)
-3. Loading skeleton components for all data-fetching views
-4. Error boundary testing
-5. Add indexes for focus_sessions queries before Analytics launch
+1. Component audit for large files (>300 lines), starting with `app/focus/page.tsx`
+2. Loading skeleton components for all data-fetching views
+3. Error boundary testing
+4. Add indexes for `focus_sessions` queries as data grows
+5. Wire up the server-side push scheduler (VAPID keys + Supabase cron) end-to-end
 
 ---
 
@@ -444,7 +443,7 @@ When prioritizing features, use this lens:
 | Quick Add usage (% of new tasks) | 0% | TBD (measurable now) | 30% | 50% |
 | Push notification opt-in rate | 0% | TBD (measurable now) | >60% | >70% |
 | Recurring task adoption | 0% | 0% | 25% of users | 50% of users |
-| Analytics page visits (weekly) | N/A | N/A (not built) | 40% of active users | 60% of active users |
+| Analytics page visits (weekly) | N/A | N/A (shipped — baseline to measure) | 40% of active users | 60% of active users |
 
 **Note:** "TBD" metrics should be measured now that Phase 1 is complete. Establish baselines within 2 weeks.
 
