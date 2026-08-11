@@ -12,7 +12,7 @@ This guide explains how to configure Google and Spotify OAuth for Priority Compa
 4. Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client ID"
 5. Select "Web application"
 6. Add authorized redirect URIs:
-   - Production: `https://vibe-with-pulse.vercel.app/auth/callback`
+   - Production: `https://prioritycompass.vercel.app/auth/callback`
    - Local: `http://localhost:3000/auth/callback`
 7. Copy the **Client ID** and **Client Secret**
 
@@ -32,7 +32,7 @@ This guide explains how to configure Google and Spotify OAuth for Priority Compa
 2. Create a new app
 3. Set app name and description
 4. Add redirect URIs:
-   - Production: `https://vibe-with-pulse.vercel.app/auth/callback`
+   - Production: `https://prioritycompass.vercel.app/auth/callback`
    - Local: `http://localhost:3000/auth/callback`
 5. Copy the **Client ID** and **Client Secret**
 

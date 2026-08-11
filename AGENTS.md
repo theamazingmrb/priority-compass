@@ -88,16 +88,16 @@ public/       # Static assets incl. PWA manifest.json, sw.js, PNG icons
 
 ## Deployment
 
-- Production: Vercel at `https://vibe-with-pulse.vercel.app` (auto-deploys from
+- Production: Vercel at `https://prioritycompass.vercel.app` (auto-deploys from
   `main`). Use `vercel --prod --yes` to deploy manually.
 - Database: hosted Supabase (production) + local Supabase (dev).
-- GitHub remote: `https://github.com/theamazingmrb/pulse` — repo name still
-  "pulse" even though the product is Priority Compass.
+- GitHub remote: `https://github.com/theamazingmrb/priority-compass`
 
 ## Things that are intentional
 
-- The repo/branch is named `pulse` and the Vercel project is `pulse`; the
-  *product* is Priority Compass. Don't rename the infra identifiers.
+- The internal Vercel project and deployment slugs still derive from `pulse`
+  (e.g. `pulse-lnp8jgkh1-...`), even though the public alias and GitHub repo are
+  now `priority-compass`. Don't churn the internal deployment identifiers.
 - Some build artifacts (`next-env.d.ts`, `tsconfig.tsbuildinfo`) regenerate on
   build — revert them before committing; don't include in PRs.
 - The app is dark-theme first (`defaultTheme="dark"`).

@@ -4,9 +4,9 @@
 
 A personal productivity OS for intentional people who want to set daily priorities, track what matters, and reflect with structure — without the overhead of enterprise tooling.
 
-**[Live Demo →](https://vibe-with-pulse.vercel.app)**
+**[Live Demo →](https://prioritycompass.vercel.app)**
 
-![CI](https://github.com/theamazingmrb/pulse/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/theamazingmrb/priority-compass/actions/workflows/ci.yml/badge.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green?logo=supabase)
@@ -204,8 +204,8 @@ Tables with Row Level Security ensuring complete data isolation between users:
 
 ```bash
 # Clone and install
-git clone https://github.com/theamazingmrb/pulse.git
-cd pulse
+git clone https://github.com/theamazingmrb/priority-compass.git
+cd priority-compass
 pnpm install
 
 # Set up environment
