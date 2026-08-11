@@ -150,11 +150,86 @@ function getDefaultActions(type) {
 }
 
 // Service worker installation
+const APP_SHELL_CACHE = 'priority-compass-shell-v1';
+
+// Core app shell assets to precache for offline use
+const PRECACHE_URLS = [
+  '/',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/icon-maskable-192.png',
+  '/icon-maskable-512.png',
+  '/apple-touch-icon.png',
+];
+
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
+  event.waitUntil(
+    caches
+      .open(APP_SHELL_CACHE)
+      .then((cache) => cache.addAll(PRECACHE_URLS))
+      .then(() => self.skipWaiting())
+  );
 });
 
-// Service worker activation
+// Service worker activation — clean up old caches
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key !== APP_SHELL_CACHE)
+            .map((key) => caches.delete(key))
+        )
+      )
+      .then(() => self.clients.claim())
+  );
+});
+
+// Fetch handler — network-first for navigation, cache-first for static assets
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+
+  // Only handle GET requests
+  if (request.method !== 'GET') return;
+
+  // Skip cross-origin requests (e.g. Spotify, Supabase API)
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  // Navigation requests: network-first, fall back to cached shell
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          // Cache the successful navigation response
+          const copy = response.clone();
+          caches.open(APP_SHELL_CACHE).then((cache) => cache.put('/', copy));
+          return response;
+        })
+        .catch(() =>
+          caches.match(request).then((cached) => cached || caches.match('/'))
+        )
+    );
+    return;
+  }
+
+  // Static asset requests: cache-first with network fallback
+  if (url.pathname.startsWith('/_next/static/') || url.pathname.startsWith('/icon-')) {
+    event.respondWith(
+      caches.match(request).then(
+        (cached) =>
+          cached ||
+          fetch(request).then((response) => {
+            if (response.ok) {
+              const copy = response.clone();
+              caches.open(APP_SHELL_CACHE).then((cache) => cache.put(request, copy));
+            }
+            return response;
+          })
+      )
+    );
+  }
 });
