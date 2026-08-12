@@ -3,9 +3,9 @@
 /**
  * BrandLogo — the Priority Compass logo mark.
  *
- * Renders the compass needle (diamond + center circle) from the app's icon,
- * using `currentColor` so it adapts to light/dark themes and any text color.
- * Use this in nav, footer, auth screens, etc. for consistent branding.
+ * A classic compass needle: pointed north tip, wider south tail, split into
+ * two halves with a center pivot ring. Reads clearly as a compass even at
+ * small sizes. Uses `currentColor` so it adapts to light/dark themes.
  */
 export default function BrandLogo({
   size = 18,
@@ -24,10 +24,19 @@ export default function BrandLogo({
       aria-hidden="true"
       className={className}
     >
-      {/* Compass needle (diamond) */}
-      <path d="M256 64 L400 256 L256 448 L112 256 Z" fill="currentColor" opacity="0.9" />
-      {/* Center pivot — knocked out to the background */}
-      <circle cx="256" cy="256" r="56" fill="transparent" stroke="currentColor" strokeWidth="18" />
+      {/* North half (pointed tip) */}
+      <path
+        d="M256 72 C 200 150, 178 200, 186 236 L 326 236 C 334 200, 312 150, 256 72 Z"
+        fill="currentColor"
+      />
+      {/* South half (wider tail) */}
+      <path
+        d="M186 276 C 178 312, 200 362, 256 440 C 312 362, 334 312, 326 276 Z"
+        fill="currentColor"
+        opacity="0.55"
+      />
+      {/* Center pivot */}
+      <circle cx="256" cy="256" r="34" fill="transparent" stroke="currentColor" strokeWidth="22" />
     </svg>
   );
 }
