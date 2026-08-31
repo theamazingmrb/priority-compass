@@ -315,10 +315,17 @@ Improve first-time user experience to drive immediate value.
 
 #### Advanced Insights (AI-Powered)
 
+**Weekly AI Summary — SHIPPED.** The `/analytics` page now has a "Weekly Insights"
+card: it aggregates a week of focus sessions, tasks, check-ins, reflections,
+values, and North Star, then generates a plain-language weekly summary. Provider
+flexible (OpenAI default, DeepSeek via `OPENAI_BASE_URL`/`OPENAI_MODEL`), with a
+deterministic rule-based fallback when no API key is configured. This is the first
+revenue-hook candidate for a pro tier.
+
 **Future Analytics Features:**
-- AI-generated weekly summary: "You were most productive on Tuesday mornings"
 - Pattern recognition: "You focus best after high-energy check-ins"
 - Suggestions: "Consider scheduling deep work before noon"
+- Scheduled/weekly email digest of the summary
 
 #### Mobile PWA (P3)
 
@@ -351,6 +358,7 @@ Only after individual product succeeds.
 - [ ] **Weekly Rhythm** — Time blocks by energy, scheduling integration
 - [ ] **Boundaries** — Say-no list, focus timer reminders
 - [ ] **Life Lanes** — War Map categories rename + balance visualization
+- [x] **AI Weekly Summary** — Analytics data story with rule-based fallback
 - [x] Rebrand to Priority Compass (PC)
 - [x] Core check-in flow with energy tracking
 - [x] Task management with 4-tier priority system

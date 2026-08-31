@@ -23,6 +23,7 @@ import ProductivitySection from "@/components/analytics/ProductivitySection";
 import TaskInsightsSection from "@/components/analytics/TaskInsightsSection";
 import StreaksSection from "@/components/analytics/StreaksSection";
 import WarMapSection from "@/components/analytics/WarMapSection";
+import WeeklyInsightsSection from "@/components/analytics/WeeklyInsightsSection";
 
 export default function AnalyticsPage() {
   const { user } = useAuth();
@@ -167,6 +168,11 @@ export default function AnalyticsPage() {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Weekly Insights (AI data story) */}
+        <div className="mb-8">
+          <WeeklyInsightsSection />
         </div>
 
         {/* Main Content Tabs */}
