@@ -390,7 +390,7 @@ export default function CheckinFlow({ onComplete }: { onComplete?: () => void })
             <StepHeader num={3} total={totalSteps} label={prompts.headline} />
             <div className="flex items-center gap-2 mb-2">
               <Map size={16} className="text-primary" />
-              <p className="text-lg font-medium">Link to your WarMap?</p>
+              <p className="text-lg font-medium">Link to your Life Lanes?</p>
             </div>
             <p className="text-sm text-muted-foreground mb-5">
               Which goal does <span className="text-foreground font-medium">&ldquo;{topPriority}&rdquo;</span> serve?

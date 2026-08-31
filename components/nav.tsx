@@ -19,7 +19,7 @@ const links = [
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/calendar", label: "Calendar", icon: CalendarDays },
   { href: "/projects", label: "Projects", icon: FolderOpen },
-  { href: "/warmap", label: "WarMap", icon: Map },
+  { href: "/warmap", label: "Life Lanes", icon: Map },
   { href: "/tasks", label: "Tasks", icon: CheckSquare },
   { href: "/journal", label: "Journal", icon: BookOpen },
   { href: "/reflections", label: "Reflections", icon: Star },

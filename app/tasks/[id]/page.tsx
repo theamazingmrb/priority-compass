@@ -353,9 +353,9 @@ function TaskDetailContent() {
         </div>
       </div>
 
-      {/* WarMap */}
+      {/* Life Lanes */}
       <div className="rounded-xl border border-border bg-card p-5">
-        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">WarMap Link</p>
+        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Life Lanes Link</p>
         <WarMapSelector taskId={task.id} />
       </div>
     </div>

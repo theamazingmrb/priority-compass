@@ -67,7 +67,7 @@ function CategoryForm({
         </div>
         <Input
           autoFocus
-          placeholder="Category name (e.g. Health, Business, Growth)"
+          placeholder="Life Lane name (e.g. Health, Business, Growth)"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="flex-1"
@@ -178,32 +178,32 @@ export default function WarMapPage() {
     if (!user) return;
     const result = await createWarMapCategory(user.id, data);
     if (result) {
-      toast.success("Category created");
+      toast.success("Life Lane created");
       setShowCategoryForm(false);
       load();
     } else {
-      toast.error("Failed to create category");
+      toast.error("Failed to create life lane");
     }
   }
 
   async function handleUpdateCategory(id: string, data: { name: string; description: string; color: string; icon: string }) {
     const result = await updateWarMapCategory(id, data);
     if (result) {
-      toast.success("Category updated");
+      toast.success("Life Lane updated");
       setEditingCategory(null);
       load();
     } else {
-      toast.error("Failed to update category");
+      toast.error("Failed to update life lane");
     }
   }
 
   async function handleDeleteCategory(id: string) {
     const ok = await deleteWarMapCategory(id);
     if (ok) {
-      toast.success("Category deleted");
+      toast.success("Life Lane deleted");
       load();
     } else {
-      toast.error("Failed to delete category");
+      toast.error("Failed to delete life lane");
     }
   }
 
@@ -265,13 +265,13 @@ export default function WarMapPage() {
         <div className="mb-8">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold mb-1">WarMap {year}</h1>
+              <h1 className="text-2xl font-bold mb-1">Life Lanes {year}</h1>
               <p className="text-muted-foreground text-sm">
                 Your year at a glance. What fronts are you fighting on, and what does winning look like?
               </p>
             </div>
             <Button onClick={() => { setShowCategoryForm(true); setEditingCategory(null); }}>
-              <Plus size={14} /> Add Category
+              <Plus size={14} /> Add Life Lane
             </Button>
           </div>
         </div>
@@ -279,7 +279,7 @@ export default function WarMapPage() {
         {/* New category form */}
         {showCategoryForm && (
           <div className="rounded-xl border border-border bg-card p-4 mb-6">
-            <h3 className="font-semibold mb-3">New Category</h3>
+            <h3 className="font-semibold mb-3">New Life Lane</h3>
             <CategoryForm
               onSave={handleCreateCategory}
               onCancel={() => setShowCategoryForm(false)}
@@ -292,12 +292,12 @@ export default function WarMapPage() {
         ) : categories.length === 0 ? (
           <div className="text-center py-16 border border-dashed border-border rounded-xl">
             <Target size={40} className="mx-auto text-muted-foreground mb-4" />
-            <h3 className="font-semibold mb-2">No categories yet</h3>
+            <h3 className="font-semibold mb-2">No life lanes yet</h3>
             <p className="text-sm text-muted-foreground mb-4 max-w-xs mx-auto">
-              Create categories for the areas of your life you want to win in this year — Health, Business, Relationships, etc.
+              Create life lanes for the areas of your life you want to win in this year — Health, Business, Relationships, etc.
             </p>
             <Button onClick={() => setShowCategoryForm(true)}>
-              <Plus size={14} /> Add your first category
+              <Plus size={14} /> Add your first life lane
             </Button>
           </div>
         ) : (

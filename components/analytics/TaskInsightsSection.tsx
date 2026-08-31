@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  TooltipValueType,
 } from "recharts";
 import { Target, TrendingUp, CheckCircle } from "lucide-react";
 
@@ -74,11 +75,13 @@ export default function TaskInsightsSection({ data }: Props) {
                         borderRadius: "8px",
                       }}
                       labelStyle={{ color: "hsl(var(--foreground))" }}
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  formatter={((value: any, name: any) => [
-                    name === "minutes" ? formatMinutes(Number(value)) : value,
-                    name === "minutes" ? "Focus Time" : "Sessions",
-                  ]) as any}
+                      formatter={(
+                        value: TooltipValueType | undefined,
+                        name: string | number | undefined
+                      ) => [
+                        name === "minutes" ? formatMinutes(Number(value)) : value,
+                        name === "minutes" ? "Focus Time" : "Sessions",
+                      ]}
                     />
                     <Bar dataKey="minutes" radius={[0, 4, 4, 0]}>
                       {data.priorityDistribution.map((entry, index) => (

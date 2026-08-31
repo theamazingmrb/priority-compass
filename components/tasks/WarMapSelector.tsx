@@ -52,7 +52,7 @@ export default function WarMapSelector({ taskId }: WarMapSelectorProps) {
 
   return (
     <div>
-      <p className="text-muted-foreground text-xs mb-1.5">WarMap</p>
+      <p className="text-muted-foreground text-xs mb-1.5">Life Lanes</p>
       <div className="flex flex-wrap gap-1.5">
         {linked.map((item) => {
           const cat = available.find((a) => a.id === item.id);
@@ -86,9 +86,9 @@ export default function WarMapSelector({ taskId }: WarMapSelectorProps) {
               unlinked.length === 0 && "opacity-40 cursor-default"
             )}
             disabled={unlinked.length === 0}
-            title={unlinked.length === 0 ? "No WarMap items available" : "Link to WarMap item"}
+            title={unlinked.length === 0 ? "No Life Lanes items available" : "Link to Life Lanes item"}
           >
-            <Plus size={10} /> Link WarMap
+            <Plus size={10} /> Link Life Lanes
           </button>
         )}
       </div>

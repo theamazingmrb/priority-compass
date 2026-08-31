@@ -10,7 +10,7 @@ import {
   WEEKDAY_OPTIONS,
   RecurrenceConfig,
 } from "@/lib/recurrence";
-import { Task } from "@/types";
+import { Task, RecurrenceType } from "@/types";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -282,7 +282,7 @@ describe("getNextOccurrence", () => {
 
   describe("edge cases", () => {
     it("returns null for unknown recurrence type", () => {
-      const config = makeConfig({ type: "unknown" as any, interval: 1 });
+      const config = makeConfig({ type: "unknown" as RecurrenceType, interval: 1 });
       const result = getNextOccurrence(config, MONDAY);
 
       expect(result).toBeNull();
@@ -455,7 +455,7 @@ describe("createTaskInstanceFromTemplate", () => {
 
   it("uses default duration of 30 minutes when not specified", () => {
     const template = makeTask({
-      estimated_duration: null as any,
+      estimated_duration: undefined,
     });
     const instanceDate = new Date("2026-03-17T09:00:00");
 
@@ -694,7 +694,7 @@ describe("formatRecurrence", () => {
   });
 
   it("returns empty string for unknown recurrence type", () => {
-    const task = makeTask({ recurrence_type: "unknown" as any });
+    const task = makeTask({ recurrence_type: "unknown" as RecurrenceType });
 
     const result = formatRecurrence(task);
 

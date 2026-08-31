@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  TooltipValueType,
 } from "recharts";
 import { Brain, Clock, Calendar } from "lucide-react";
 
@@ -277,11 +278,13 @@ export default function ProductivitySection({ data }: Props) {
                     borderRadius: "8px",
                   }}
                   labelStyle={{ color: "hsl(var(--foreground))" }}
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  formatter={((value: any, name: any) => [
+                  formatter={(
+                    value: TooltipValueType | undefined,
+                    name: string | number | undefined
+                  ) => [
                     name === "minutes" ? formatMinutes(Number(value)) : value,
                     name === "minutes" ? "Focus Time" : "Sessions",
-                  ]) as any}
+                  ]}
                 />
                 <Bar dataKey="sessions" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]}>
                   {data.weeklyData.map((entry, index) => (

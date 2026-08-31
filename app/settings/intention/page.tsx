@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Compass, Sparkles, Plus, X, GripVertical, Loader2, Shield, AlertTriangle } from "lucide-react";
+import { Compass, Sparkles, Plus, X, GripVertical, Loader2, Shield, AlertTriangle, Map } from "lucide-react";
 import { toast } from "sonner";
 import { getNorthStar, upsertNorthStar, NORTH_STAR_PROMPTS } from "@/lib/north-star";
 import { getCoreValues, addCoreValue, updateCoreValue, deleteCoreValue, CORE_VALUE_PROMPTS, MAX_VALUES } from "@/lib/core-values";
@@ -593,16 +593,21 @@ function IntentionSettingsContent() {
       </Card>
 
       {/* Life Lanes teaser */}
-      <Card className="mt-6 opacity-50">
+      <Card className="mt-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
+            <Map className="h-5 w-5 text-blue-500" />
             Life Lanes
-            <span className="text-xs bg-muted px-2 py-0.5 rounded-full font-normal">Coming Soon</span>
           </CardTitle>
           <CardDescription>
             Balance visualization across all areas of your life.
           </CardDescription>
         </CardHeader>
+        <CardContent>
+          <Button variant="outline" size="sm" onClick={() => router.push("/warmap")}>
+            Open Life Lanes
+          </Button>
+        </CardContent>
       </Card>
     </div>
   );

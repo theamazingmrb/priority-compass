@@ -13,7 +13,7 @@ export default function WarMapSection({ data }: Props) {
       <Card className="border-dashed">
         <CardContent className="p-8 text-center">
           <Map className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-30" />
-          <p className="text-muted-foreground">WarMap data not available</p>
+          <p className="text-muted-foreground">Life Lanes data not available</p>
         </CardContent>
       </Card>
     );
@@ -45,7 +45,7 @@ export default function WarMapSection({ data }: Props) {
                   Completed
                 </p>
                 <p className="text-2xl font-bold">{data.completedTasks}</p>
-                <p className="text-xs text-muted-foreground">WarMap items</p>
+                <p className="text-xs text-muted-foreground">Life Lanes items</p>
               </div>
             </div>
           </CardContent>
@@ -64,7 +64,7 @@ export default function WarMapSection({ data }: Props) {
                 <p className="text-2xl font-bold">
                   {data.totalTasks - data.completedTasks}
                 </p>
-                <p className="text-xs text-muted-foreground">WarMap items</p>
+                <p className="text-xs text-muted-foreground">Life Lanes items</p>
               </div>
             </div>
           </CardContent>
@@ -97,7 +97,7 @@ export default function WarMapSection({ data }: Props) {
             <div className="p-2 rounded-lg bg-primary/10">
               <Award className="w-5 h-5 text-primary" />
             </div>
-            <CardTitle>WarMap Progress</CardTitle>
+            <CardTitle>Life Lanes Progress</CardTitle>
           </div>
         </CardHeader>
         <CardContent>
@@ -118,9 +118,9 @@ export default function WarMapSection({ data }: Props) {
             {data.totalTasks === 0 && (
               <div className="text-center py-8 text-muted-foreground">
                 <Map className="w-12 h-12 mx-auto mb-4 opacity-30" />
-                <p>No WarMap items yet.</p>
+                <p>No Life Lanes items yet.</p>
                 <p className="text-sm">
-                  Add items to your WarMap to track progress toward your annual goals.
+                  Add items to your Life Lanes to track progress toward your annual goals.
                 </p>
               </div>
             )}
@@ -173,14 +173,14 @@ export default function WarMapSection({ data }: Props) {
             <div>
               <h3 className="font-semibold mb-1">Keep Building Your Legacy</h3>
               <p className="text-sm text-muted-foreground mb-3">
-                Your WarMap tracks your progress toward your annual goals. Each completed
+                Your Life Lanes tracks your progress toward your annual goals. Each completed
                 item brings you closer to your vision.
               </p>
               <a
                 href="/warmap"
                 className="inline-flex items-center justify-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
               >
-                View WarMap
+                View Life Lanes
               </a>
             </div>
           </div>

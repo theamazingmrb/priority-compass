@@ -190,7 +190,7 @@ export default function AnalyticsPage() {
             </TabsTrigger>
             <TabsTrigger value="warmap" className="flex items-center gap-2 py-2">
               <Map size={16} />
-              <span className="hidden sm:inline">WarMap</span>
+              <span className="hidden sm:inline">Life Lanes</span>
             </TabsTrigger>
           </TabsList>
 
@@ -216,7 +216,7 @@ export default function AnalyticsPage() {
             ) : (
               <Card>
                 <CardContent className="p-8 text-center">
-                  <p className="text-muted-foreground">WarMap data not available</p>
+                  <p className="text-muted-foreground">Life Lanes data not available</p>
                 </CardContent>
               </Card>
             )}
